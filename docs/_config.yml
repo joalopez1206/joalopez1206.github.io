@@ -28,7 +28,7 @@ twitter_username:
 github_username:  joalopez1206
 
 # Build settings
-remote_theme: pages-themes/hacker@v0.2.0
+theme: minimal
 plugins:
   - jekyll-feed
   - jekyll-remote-theme # add this line to the plugins list if you already have one
