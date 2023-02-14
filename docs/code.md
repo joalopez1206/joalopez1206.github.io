@@ -1,6 +1,8 @@
+---
 layout: page
 title: "code"
 permalink: /code
+---
 
 this is for adding code, ex
 ```c
