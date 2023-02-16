@@ -31,7 +31,7 @@ github_username:  joalopez1206
 
 # Build settings
 theme: minima
-remote_theme: benbalter/retlab
+#remote_theme: minima
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
@@ -58,47 +58,3 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
-
-lang: en-US
-
-# Pages to include in header navigation
-nav_pages:
-  - index.markdown
-  - code.md
-  - Practica_Satelites.md
-  - cmake_tutorial.md
-
-# Pages to include in footer navigation
-footer_pages:
-  - about.markdown
-
-# Disqus login information, for comments
-disqus:
-  shortname: DISQUS_USERNAME
-
-# Links to include on the contact page
-contact_links:
-  - name: Github
-    url: https://github.com/joalopez1206/
-    icon: github
-
-# Front matter defaults
-defaults:
-  -
-    scope:
-      path: ""
-      type: "posts"
-    values:
-      layout: post
-      comments: true
-  -
-    scope:
-      path: ""
-      type: "pages"
-    values:
-      layout: page
-      comments: false
-
-# Plugins
-plugins:
-  
