@@ -115,8 +115,11 @@ Y mi archivo `hello_world.c` lo cambiamos a lo siguiente
 
 int main(){
     hola("matias");
-    hola("profe marcos");
-    hola("chiquito");
+	hola("profe marcos");
+	hola("chiquito");
+	hola("vicho");
+	hola("pato");
+	hola("felipe");
     return 0;
 }
 ```
