@@ -23,9 +23,46 @@ Cmake intenta abstraer un poco este problema usando un concepto importante, __ta
 Los __targets__ son objetivos que le decimos a cmake que tiene que construir, para fines practicos estos son 2
 1. Executables (ejecutables)
 2. Libraries (librerias)
-Ahora nosotros le podemos decir a cmake que haga una libreria o ejecutable con el siguiente comando 
+
+le podemos decir a cmake que haga una libreria o ejecutable con el siguiente comando 
 
 ```cmake 
 add_library(<LIB_NAME> <SRC_FILES>)
 add_executable(<EXEC_NAME> <SRC_FILES>)
+```
+
+Pero antes hay un poco de boilerplate, si queremos usar cmake, tenemos que crear un `CMakeLists.txt`, le tenemos que decir primero como se llama el proyecto y setear el minimo requerido para usar ese cmake.
+
+Por ejemplo si tuviese un archivo `hello_world.c`
+```c
+#include <stdio.h>
+int main(){
+    printf("Hello world!\n");
+    return 0;
+}
+```
+Un cmakelists para este proyecto simple se veria de esta forma:
+```cmake 
+cmake_minimum_required(3.20)
+project(Tutorial)
+add_executable(hello_world hello_world.c)
+```
+Expliquemos esto rapidamente
+
+* `cmake_minimum_required(3.20)`  le indica a cmake la minima version que se requiere para usar este cmake
+* `project(Tutorial)` le indica que el nombre de este projecto se llama Tutorial
+* `add_executable(hello_world hello_world.c)` le indica que estamos añadiendo un __target__ que es ejecutable, llamado hello_world de el source file `hello_world.c`
+
+Podemos incluso agregar otros parametros en project y tambien es de buena costumbre (y se vera mucho en este proyecto) que los archivos quedan en una variable llamada `SOURCE_FILES` (¿Variables? sí ! `cmake` es un lenguaje de programacion tambien, y para usar una variable tiene una syntax paracida a la de bash ie usamos `${VAR}` para referenciar lo que estan dentro de `VAR`) y podemos usar `set(<NAME_VAR> <OBJECT>)` para setear el valor de la variable al objeto. todo lo dicho anteriormente podemos aplicarlo y queda así
+```cmake 
+set(SOURCE_FILES hello_world.c)
+cmake_minimum_required(3.20)
+project(Tutorial
+    VERSION
+        1.0
+    DESCRIPTION
+        "Tutorial para suchai flight software"
+    LANGUAGES
+        C)
+add_executable(hello_world ${SOURCE_FILES})
 ```
