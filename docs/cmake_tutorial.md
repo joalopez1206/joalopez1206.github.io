@@ -1,5 +1,5 @@
 ---
 layout: page
-title: "code"
-permalink: /code
+title: "cmake"
+permalink: /cmake
 ---
