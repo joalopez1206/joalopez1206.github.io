@@ -7,7 +7,8 @@ permalink: /cmake
 > texto
 ### SI SABEN INGLES, RECOMIENDO MUCHO VER EL SIGUIENTE [TUTORIAL](https://hsf-training.github.io/hsf-training-cmake-webpage/01-intro/index.html) SI QUIEREN PROFUNDIZAR. ESTA ES UNA VERSION ADAPTADA DE ESE TUTORIAL
 
-### Esto es un pequeño tutorial de como funciona cmake en el flight software, pero antes necesitamos saber que es cmake.
+### Un pequeño tutorial de como funciona Cmake
+> Es fundamental saber Cmake para entender como se buildea el flight software
 
 Cmake es un sistema para buildear proyectos (Buildear se refiere a contruir el proyecto, osea compilaciones y linkeos de librerias que vamos a usar), lo que nos ahorra el paso de realizar linkeos de liberias via gcc que uno piensa que puede "llegar y usar" pero no es así.
 Por ejemplo si queremos compilar algo con threads de POSIX  usariamos el siguiente comando 
@@ -16,7 +17,7 @@ Por ejemplo si queremos compilar algo con threads de POSIX  usariamos el siguien
 ```
 Entonces compilamos nuestro `.c` con pthread, pero ahora que pasa si, nuestro `.c` lo queremos usar como una libreria y solo queremos un `.a` (estatica) o un `.so` (dinamica). Se puede hacer con gcc (y es muy WEBIADO, un link de ayuda [aqui](https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html)) pero ahora tenemos que ver que ocurre con si tenemos un archivo que requiere esa libreria, si esto ocurre tendriamos que
 1. Compilar primero la libreria 
-2. Despues compilar nuestro archivo con la libreria ya compilada (ie es un `.a` o un `.so`)
+2. Despues compilar nuestro archivo `.c` con la libreria ya compilada (ie la libreria es un `.a` o un `.so`)
 
 Pero ahora esto se vuelve un problema si tenemos varios archivos con varias dependencias, por lo tanto se vuelve importante un sistema para buildear.
 
@@ -58,7 +59,7 @@ Expliquemos esto rapidamente
 * `project(Tutorial)` le indica que el nombre de este projecto se llama Tutorial
 * `add_executable(hello_world hello_world.c)` le indica que estamos añadiendo un __target__ que es ejecutable, llamado hello_world de el source file `hello_world.c`
 
-¿Y donde está este cmake en mi proyecto? Para este caso puede estar al mismo nivel de nuestro `.c` pero veremos mas adelante que el suchai flight software, los source files estan en otras carpetas y sus includes tambien. aqui hay un ejemplo de como se veria este Proyecto:
+__¿Y donde está este CMakeLists.txt en mi proyecto?__ Para este caso puede estar al mismo nivel de nuestro `.c` pero veremos mas adelante que el suchai flight software, los source files estan en otras carpetas y sus includes tambien. aqui hay un ejemplo de como se veria este Proyecto:
 ```
 .
 ├── CMakeLists.txt
@@ -142,9 +143,9 @@ Entonces ahora nuestro problema es, queremos usarlo como funcion de libreria y n
 ¿Pero como CMake sabe que esta esa libreria? Se lo decimos! El cmakelists que esta en la carpeta MiLibreria, se encarga de crear la liberia. pero que hay en este cmake? Veamoslo:
 ```cmake
 #CMakeLists de MiLibreria
-add_library(mylib mylib.c mylib.h)
+add_library(MyLib mylib.c mylib.h)
 ```
-Solo esa linea, que añade un __target__ libreria llamado mylib donde estan los source_files(mylib.c) y los headers(mylib.h este paso es opcional pero deja mas claro lo que hay en mylib). Ahora queda registrada nuestra libreria, pero hay que decirle al otro cmake (el de hello_world) que incluya la libreria.
+Solo esa linea, que añade un __target__ libreria llamado `MyLib` donde estan los source_files(`mylib.c`) y los headers(`mylib.h` este paso es opcional pero deja mas claro lo que hay en `MyLib`). Ahora queda registrada nuestra libreria, pero hay que decirle al otro cmake (el de hello_world) que incluya la libreria.
 
 Veamos como queda:
 ```cmake
@@ -167,14 +168,14 @@ add_executable(hello_world ${SOURCE_FILES})
 #Añadimos la libreria al include del hello_world
 target_include_directories(hello_world PUBLIC MiLibreria)
 #Añadimos la libreria al ejecutable
-target_link_libraries(hello_world PUBLIC mylib)
+target_link_libraries(hello_world PUBLIC MyLib)
 ```
 Aqui introducimos nuevas funciones( VER ESTA PARTE):
 
-1. `add_subdirectory(MiLibreria)` añade un subdirectorio que contenga un cmake al proyecto, en este caso estamos usando el cmake de MiLibreria, que crea la libreria `mylib`
+1. `add_subdirectory(MiLibreria)` añade un subdirectorio que contenga un cmake al proyecto, en este caso estamos usando el cmake de MiLibreria, que crea la libreria `MyLib`
 
-2. `target_include_directories(hello_world PUBLIC MiLibreria)` le dice añadimos el directorio que contiene los .h a un target, así sabe donde buscar los .h, en este caso busca los punto h en MiLibreria, donde se ubica mylib.h
-3. `target_link_libraries(hello_world PUBLIC mylib)` aqui le decimos que estamos linkeando la libreria mylib con hello_world, para que así el __target__ ejecutable hello_world pueda usar el __target__  mylib.
+2. `target_include_directories(hello_world PUBLIC MiLibreria)` le dice añadimos el directorio que contiene los `.h` a un target, así sabe donde buscar los `.h`, en este caso busca los `.h` en el directorio MiLibreria, donde se ubica `mylib.h`
+3. `target_link_libraries(hello_world PUBLIC MyLib)` aqui le decimos que estamos linkeando la libreria MyLib con hello_world, para que así el __target__ ejecutable hello_world pueda usar el __target__  MyLib.
 
 Luego de esto tenemos que reconfigurar el cmake 
 ```bash
@@ -203,6 +204,7 @@ simple de threads y veamos que onda:
 #include <pthread.h>
 #include <stdio.h>
 #include <unistd.h>
+
 void *hola(void *args){
     char *nombre = (char*) args;
     sleep(4);
@@ -235,3 +237,5 @@ find_package(Threads REQUIRED)
 add_executable(target_exec target_file.c)
 target_link_libraries(target_file Threads::Threads)
 ```
+
+Con esto ya deberia de ser suficiente para entender los cmakes del proyecto. En la siguiente pagina veremos como se estructura el proyecto.
