@@ -54,12 +54,12 @@ add_executable(hello_world hello_world.c)
 ```
 Expliquemos esto rapidamente
 
-* `cmake_minimum_required(3.20)`  le indica a cmake la minima version que se requiere para usar este cmake
+* `cmake_minimum_required(VERSION 3.15)`  le indica a cmake la minima version que se requiere para usar este cmake
 * `project(Tutorial)` le indica que el nombre de este projecto se llama Tutorial
 * `add_executable(hello_world hello_world.c)` le indica que estamos añadiendo un __target__ que es ejecutable, llamado hello_world de el source file `hello_world.c`
 
 ¿Y donde está este cmake en mi proyecto? Para este caso puede estar al mismo nivel de nuestro `.c` pero veremos mas adelante que el suchai flight software, los source files estan en otras carpetas y sus includes tambien. aqui hay un ejemplo de como se veria este Proyecto:
-```bash
+```
 .
 ├── CMakeLists.txt
 └── hello_world.c
@@ -88,7 +88,6 @@ $ cmake -B build
 
 Aqui le estamos diciendo a cmake que queremos que el resultado de buildear el proyecto quede en la carpeta build y va a realizar toda la configuracion automaticamente. Ahora para buildear podemos usar el siguiente comando y luego podemos cambiar de directorio y ejecutar
 ```bash
-
 $ cmake --build build
 $ cd build
 $ ./hello_world
@@ -116,19 +115,19 @@ Y mi archivo `hello_world.c` lo cambiamos a lo siguiente
 #include "mylib.h"
 
 int main(){
-    hola("matias");
-	hola("profe marcos");
-	hola("chiquito");
-	hola("vicho");
-	hola("pato");
-	hola("felipe");
-    return 0;
+  hola("matias");
+  hola("profe marcos");
+  hola("chiquito");
+  hola("vicho");
+  hola("pato");
+  hola("felipe");
+  return 0;
 }
 ```
 
 Entonces ahora nuestro problema es, queremos usarlo como funcion de libreria y no como ejecutable, entonces ¿como hacemos eso? Añadiendo un nuevo target, pero en este caso una libreria, lo normal es que esto se ubique en una carpeta aparte del main, en este caso se veria así
 ```bash
-./
+.
 ├── CMakeLists.txt
 ├── hello_world.c
 └── MiLibreria
@@ -138,12 +137,14 @@ Entonces ahora nuestro problema es, queremos usarlo como funcion de libreria y n
 ```
 ¿Pero como CMake sabe que esta esa libreria? Se lo decimos! El cmakelists que esta en la carpeta MiLibreria, se encarga de crear la liberia. pero que hay en este cmake? Veamoslo:
 ```cmake
+#CMakeLists de MiLibreria
 add_library(mylib mylib.c mylib.h)
 ```
 Solo esa linea, que añade un __target__ libreria llamado mylib donde estan los source_files(mylib.c) y los headers(mylib.h este paso es opcional pero deja mas claro lo que hay en mylib). Ahora queda registrada nuestra libreria, pero hay que decirle al otro cmake (el de hello_world) que incluya la libreria.
 
 Veamos como queda:
 ```cmake
+#Top CmakeLists
 cmake_minimum_required(VERSION 3.15)
 
 project(Tutorial
@@ -188,3 +189,32 @@ hola pato
 hola felipe
 $
 ```
+Y listo! ahora tenemos un ejecutable que usa una libreria que nosotros creamos.
+
+Ahora por ejemplo, supongamos que una libreria esta dentro de nuestro sistema, es como una dependencia, por ejemplo Threads, entonces veamos una funcion simple de threads y veamos que onda
+
+```c
+#include <pthread.h>
+#include <stdio.h>
+#include <unistd.h>
+void *hola(void *args){
+    char *nombre = (char*) args;
+    sleep(4);
+    printf("Hola desde el thread %s\n",nombre);
+    return NULL;
+}
+
+int main(){
+    pthread_t t1;
+    pthread_create(&t1, NULL, hola,"2");
+    sleep(2);
+    hola("1");
+    pthread_join(t1,NULL);
+    return 0;
+}
+```
+si intentamos hacer lo de toda la vida 
+``` bash 
+gcc -o target_exec target_file.c 
+```
+tendremos el siguiente error ...
