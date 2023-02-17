@@ -1,8 +1,10 @@
 ---
 layout: page
-title: "Cmake tutorial piola"
+title: "Cmake tutorial "
 permalink: /cmake
 ---
+> **Warning**
+> texto
 ### SI SABEN INGLES, RECOMIENDO MUCHO VER EL SIGUIENTE [TUTORIAL](https://hsf-training.github.io/hsf-training-cmake-webpage/01-intro/index.html) SI QUIEREN PROFUNDIZAR. ESTA ES UNA VERSION ADAPTADA DE ESE TUTORIAL
 
 ### Esto es un pequeño tutorial de como funciona cmake en el flight software, pero antes necesitamos saber que es cmake.
@@ -57,7 +59,7 @@ Expliquemos esto rapidamente
 * `add_executable(hello_world hello_world.c)` le indica que estamos añadiendo un __target__ que es ejecutable, llamado hello_world de el source file `hello_world.c`
 
 ¿Y donde está este cmake en mi proyecto? Para este caso puede estar al mismo nivel de nuestro `.c` pero veremos mas adelante que el suchai flight software, los source files estan en otras carpetas y sus includes tambien. aqui hay un ejemplo de como se veria este Proyecto:
-```bash
+```graphql
 .
 ├── CMakeLists.txt
 └── hello_world.c
@@ -125,7 +127,7 @@ int main(){
 ```
 
 Entonces ahora nuestro problema es, queremos usarlo como funcion de libreria y no como ejecutable, entonces ¿como hacemos eso? Añadiendo un nuevo target, pero en este caso una libreria, lo normal es que esto se ubique en una carpeta aparte del main, en este caso se veria así
-```bash
+```graphql
 .
 ├── CMakeLists.txt
 ├── hello_world.c
