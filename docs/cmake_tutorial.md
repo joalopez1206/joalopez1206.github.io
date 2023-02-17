@@ -86,14 +86,18 @@ Dicho esto entonces hay que configurar nuestro cmake para que buildee fuera de n
 $ cmake -B build
 ```
 
-Aqui le estamos diciendo a cmake que queremos que el resultado de buildear el proyecto quede en la carpeta build y va a realizar toda la configuracion automaticamente. Ahora para buildear podemos usar el siguiente comando y luego podemos cambiar de directorio y ejecutar
+Aqui le estamos diciendo a cmake que queremos que el resultado de buildear el proyecto quede en la carpeta build y va a realizar toda la *configuracion* automaticamente ya que esta especificado en el cmake.
+
+> Con **configuracion** me refiero a que, cmake lo que hace es crear un archivo makefile, lo cual es un sistema de buildeo mas antiguo y de ahí, usa el comando `make` para buildear el proyecto.
+
+ Ahora para buildear podemos usar el siguiente comando y luego podemos cambiar de directorio y ejecutar
 ```bash
 $ cmake --build build
 $ cd build
 $ ./hello_world
 Hello world!
 ```
-
+### Compilando librerias con "..."
 Ahora supongamos que yo quiero usar una funcion de libreria en un archivo llamado `mylib.c` y `mylib.h` que haga lo sigiente
 ```h
 //este es mylib.h
@@ -191,7 +195,9 @@ $
 ```
 Y listo! ahora tenemos un ejecutable que usa una libreria que nosotros creamos.
 
-Ahora por ejemplo, supongamos que una libreria esta dentro de nuestro sistema, es como una dependencia, por ejemplo Threads, entonces veamos una funcion simple de threads y veamos que onda
+### Compilando librerias con <...>
+Ahora por ejemplo, supongamos que una libreria esta dentro de nuestro sistema, es como una dependencia, por ejemplo pthreads, entonces veamos un programa 
+simple de threads y veamos que onda:
 
 ```c
 #include <pthread.h>
@@ -213,8 +219,19 @@ int main(){
     return 0;
 }
 ```
-si intentamos hacer lo de toda la vida 
-``` bash 
-gcc -o target_exec target_file.c 
+Podemos compilarlo con el siguiente comando 
+```bash
+gcc -o target_exec target_file.c -lpthread
 ```
-tendremos el siguiente error ...
+Donde le decimos al compilador que estamos usando la libreria pthreads
+
+Ahora esto en cmake lists se veria así
+
+```cmake
+cmake_minimum_required(VERSION 3.15)
+project(Threads_locos)
+find_package(Threads REQUIRED)
+
+add_executable(target_exec target_file.c)
+target_link_libraries(target_file Threads::Threads)
+```
