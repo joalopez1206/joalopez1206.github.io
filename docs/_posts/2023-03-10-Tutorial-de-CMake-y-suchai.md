@@ -6,8 +6,8 @@ categories: Suchai Tutorial
 ---
 
 Hola! este es un pequeño indice del tutorial en el flight software
-1. Pagina 1
-2. Pagina 2
+1. [Cmake Tutorial](../cmake_tutorial.md)
+2. [Suchai CMake tutorial](../suchai_tutorial.md)
 
 La idea de este tutorial es que se entienda como funciona el sistema de buildeo del flight software
 y que se puede hacer para arreglar ciertos problemas que hay con otros sistemas de buildeos (waf xd)
