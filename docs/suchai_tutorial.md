@@ -134,3 +134,8 @@ Hagamos el mismo analisis anterior
 2. Aqui añadimos el ejecutable con los que usa los sourcefiles que asignamos recien
 3. Aqui le decimos que los includes para el ejecutable `suchai-app` estan en la carpeta include (esto explica porque cuando en nuestro codigo de alguna aplicacion del suchai, tenemos que incluir las cosas con la forma `#include "app/system/"...".h"`)
 4. Finalmente, le decimos que linkee nuestro ejecutable con la libreria suchai-fs-core,que es la maquinaria del suchai!
+
+Dicho esto, hagamos un ejemplo rapido de como prender un LED con una raspberry pi usando wiringPi, pero lo haremos de dos formas, siguiendo lo dicho en el tutorial anterior
+1. Usando solo los archivos necesarios de wiringPi y importando de la forma `#include "...".h`
+
+2. Usando wiringPi suponiendo que esta preinstalado ie, Colocandolo como dependencia en CMake y importandolo de la forma `#include <...>.h`
