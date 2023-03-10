@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Tutorial de CMake y suchai "
+title: "Tutorial de CMake y suchai"
 date: 2023-03-10 10:54:20 -0000
 categories: Suchai Tutorial
 ---
