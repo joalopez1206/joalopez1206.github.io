@@ -10,4 +10,4 @@ Hola! este es un pequeño indice del tutorial en el flight software
 2. Pagina 2
 
 La idea de este tutorial es que se entienda como funciona el sistema de buildeo del flight software
-y que se puede hacer para 
+y que se puede hacer para arreglar ciertos problemas que hay con otros sistemas de buildeos (waf xd)
