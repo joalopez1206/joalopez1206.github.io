@@ -7,7 +7,7 @@ permalink: /suchai-cmake
 
 Suponiendo que vieron lo anterior de cmake ahora la pregunta es:
 
->> ¿Y de que (chota) me sirve esto para el suchai flight software _(sfs)_?
+> ¿Y de que me sirve esto para el suchai flight software _(sfs)_?
 
 Como veremos, es muy util ya que, si quieres agregar alguna libreria que maneje algun dispoisitivo (por ejemplo WiringPi, si es de gpio o i2c) entonces con lo del tutorial anterior tenemos una base para logar eso!
 
@@ -136,6 +136,10 @@ Hagamos el mismo analisis anterior
 4. Finalmente, le decimos que linkee nuestro ejecutable con la libreria suchai-fs-core,que es la maquinaria del suchai!
 
 Dicho esto, hagamos un ejemplo rapido de como prender un LED con una raspberry pi usando wiringPi, pero lo haremos de dos formas, siguiendo lo dicho en el tutorial anterior
-1. Usando solo los archivos necesarios de wiringPi y importando de la forma `#include "...".h`
 
-2. Usando wiringPi suponiendo que esta preinstalado ie, Colocandolo como dependencia en CMake y importandolo de la forma `#include <...>.h`
+1. Usando solo los archivos necesarios de wiringPi y importando de la forma `#include "...".h` Notar que para que esto funcione tenemos que tener los archivos de wiringPi y dejar los que necesitamos en una carpeta.
+
+2. Usando wiringPi suponiendo que esta preinstalado ie, Colocandolo como dependencia en CMake y importandolo de la forma `#include <...>.h`.
+
+> Si quieren saber cual es la diferencia entre usar `""` y `<>` [aqui](https://www.geeksforgeeks.org/difference-between-include-and-include-in-c-c-with-examples/) hay una buena explicacion, pero basicamente es porque el preprocesador busca en carpetas predefinidas los `<>` y los `""` los busca donde define el programador.
+

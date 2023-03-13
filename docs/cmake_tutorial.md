@@ -15,17 +15,18 @@ Por ejemplo si queremos compilar algo con threads de POSIX  usariamos el siguien
 ```bash
     gcc -o target_exec target_file.c -lpthread
 ```
-Entonces compilamos nuestro `.c` con pthread, pero ahora que pasa si, nuestro `.c` lo queremos usar como una libreria y solo queremos un `.a` (estatica) o un `.so` (dinamica). Se puede hacer con gcc (y es muy WEBIADO, un link de ayuda [aqui](https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html)) pero ahora tenemos que ver que ocurre con si tenemos un archivo que requiere esa libreria, si esto ocurre tendriamos que
+Entonces compilamos nuestro `.c` con pthread, pero ahora que pasa si, nuestro `.c` lo queremos usar como una libreria y solo queremos un `.a` (estatica) o un `.so` (dinamica). Se puede hacer con gcc (y es muy xd, un link de ayuda [aqui](https://www.cprogramming.com/tutorial/shared-libraries-linux-gcc.html)) pero ahora tenemos que ver que ocurre con si tenemos un archivo que requiere esa libreria, si esto ocurre tendriamos que
 1. Compilar primero la libreria 
 2. Despues compilar nuestro archivo `.c` con la libreria ya compilada (ie la libreria es un `.a` o un `.so`)
 
 Pero ahora esto se vuelve un problema si tenemos varios archivos con varias dependencias, por lo tanto se vuelve importante un sistema para buildear.
+Ahora para esto hay varias alternativas, pero por el momento nos basta saber la existencia de 2, `make` y `cmake`.
 
 Ahora que tenemos un poco de motivacion ¿de que trata CMake?
 Cmake intenta abstraer un poco este problema usando un concepto importante, __targets__.
 Los __targets__ son objetivos que le decimos a cmake que tiene que construir, para fines practicos estos son 2
 1. Executables (ejecutables)
-2. Libraries (librerias)
+2. Libraries (librerias) que pueden ser estaticas `.a` o dinamicas `.so`
 
 le podemos decir a cmake que haga una libreria o ejecutable con el siguiente comando 
 
@@ -34,7 +35,8 @@ add_library(<LIB_NAME> <SRC_FILES>)
 add_executable(<EXEC_NAME> <SRC_FILES>)
 ```
 
-Pero antes hay un poco de boilerplate, si queremos usar cmake, tenemos que crear un __`CMakeLists.txt`__ ___¡OJO, TIENE QUE SER ESE NOMBRE!___ 
+Pero antes hay un poco de boilerplate, si queremos usar cmake, tenemos que crear un __`CMakeLists.txt`__ 
+> ___¡OJO, TIENE QUE SER ESE NOMBRE!___ Si no es `CMakeLists.txt` cmake no sabra que regla seguir. 
 
 Le tenemos que decir primero como se llama el proyecto y setear el minimo requerido para usar ese cmake.
 
@@ -89,7 +91,7 @@ $ cmake -B build
 
 Aqui le estamos diciendo a cmake que queremos que el resultado de buildear el proyecto quede en la carpeta build y va a realizar toda la *configuracion* automaticamente ya que esta especificado en el cmake.
 
-> Con **configuracion** me refiero a que, cmake lo que hace es crear un archivo makefile, lo cual es un sistema de buildeo mas antiguo y de ahí, usa el comando `make` para buildear el proyecto.
+> Con **configuracion** me refiero a que, cmake lo que hace es crear un archivo makefile, lo cual usa `make`(Un sistema mas antiguo de UNIX) de ahí, usa el comando `make` para buildear el proyecto.
 
  Ahora para buildear podemos usar el siguiente comando y luego podemos cambiar de directorio y ejecutar
 ```bash
